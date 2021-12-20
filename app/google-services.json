@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "496848978593",
+    "project_id": "instach-c2484",
+    "storage_bucket": "instach-c2484.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:496848978593:android:6649cb59843dc4a0a5e6e0",
+        "android_client_info": {
+          "package_name": "com.example.instach"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "496848978593-3k30m7t2ppj3fvauf1g7os3unid37hb3.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.instach",
+            "certificate_hash": "322ad0f4d8c19ce4e81fdba77dab33bc4079e6ae"
+          }
+        },
+        {
+          "client_id": "496848978593-m1fhe4lhu7uskmiahg4ppnthq5jpfqf2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBA-vaMiLu6aWVycpeC9XA7yYjI36KZWfo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "496848978593-m1fhe4lhu7uskmiahg4ppnthq5jpfqf2.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

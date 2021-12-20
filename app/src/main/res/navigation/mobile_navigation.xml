@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/navigation_home">
+
+    <fragment
+        android:id="@+id/navigation_home"
+        android:name="com.example.instach.ui.HomeFragment"
+        android:label="@string/title_home"
+        tools:layout="@layout/fragment_home" />
+
+    <activity
+        android:id="@+id/navigation_add"
+        android:name="com.example.instach.AddPostActivity"
+        android:label="@string/title_add_post"
+        tools:layout="@layout/activity_add_post" />
+    <fragment
+        android:id="@+id/navigation_search"
+        android:name="com.example.instach.ui.SearchFragment"
+        android:label="@string/title_search"
+        tools:layout="@layout/fragment_search" >
+        <action
+            android:id="@+id/action_navigation_search_to_navigation_profile"
+            app:destination="@id/navigation_profile" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_profile"
+        android:name="com.example.instach.ui.ProfileFragment"
+        android:label="@string/title_profile"
+        tools:layout="@layout/fragment_profile" >
+        <action
+            android:id="@+id/action_navigation_profile_to_accountSettingsActivity"
+            app:destination="@id/accountSettingsActivity" />
+    </fragment>
+    <fragment
+        android:id="@+id/navigation_dashboard"
+        android:name="com.example.instach.ui.AddPostFragment"
+        android:label="@string/title_dashboard"
+        tools:layout="@layout/fragment_addpost" />
+
+    <fragment
+        android:id="@+id/navigation_notifications"
+        android:name="com.example.instach.ui.NotificationsFragment"
+        android:label="@string/title_notifications"
+        tools:layout="@layout/fragment_notifications" />
+    <activity
+        android:id="@+id/accountSettingsActivity"
+        android:name="com.example.instach.AccountSettingsActivity"
+        android:label="activity_account_settings"
+        tools:layout="@layout/activity_account_settings" />
+</navigation>
