@@ -1,6 +1,7 @@
 package com.example.instach.Adapter
 
 import android.content.Context
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,11 +10,13 @@ import android.widget.TextView
 import androidx.annotation.NonNull
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.example.instach.Model.User
 import com.example.instach.R
 import androidx.navigation.fragment.findNavController
+import com.example.instach.MainActivity
 import com.example.instach.ui.SearchFragment
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
@@ -26,10 +29,11 @@ import de.hdodenhof.circleimageview.CircleImageView
 
 
 class UserAdapter(
-    private var mContext: Context, private var mUser: List<User>,
+    private var mContext: Context,
+    private var mUser: List<User>,
     private var isFragment: Boolean = false,
-    private var navController: NavController
 ) : RecyclerView.Adapter<UserAdapter.ViewHolder>() {
+
 
     private var firebaseUser: FirebaseUser? = FirebaseAuth.getInstance().currentUser
 
@@ -49,12 +53,21 @@ class UserAdapter(
 
         checkFollowingStatus(user.getUid(), holder.follow_btn)
 
-        holder.itemView.setOnClickListener(View.OnClickListener {
-            val pref = mContext.getSharedPreferences("PREFS", Context.MODE_PRIVATE).edit()
-            pref.putString("profileId", user.getUid())
-            pref.apply()
+        holder.itemView.setOnClickListener(View.OnClickListener { view ->
+           if (isFragment){
+               val pref = mContext.getSharedPreferences("PREFS", Context.MODE_PRIVATE).edit()
+               pref.putString("profileId", user.getUid())
+               pref.apply()
 
-            navController.navigate(R.id.navigation_profile)
+               //navController.navigate(R.id.navigation_profile)
+               view.findNavController().navigate(R.id.navigation_profile)
+           }else{
+               val intent = Intent(mContext, MainActivity::class.java)
+               intent.putExtra("publisherId", user.getUid())
+               mContext.startActivity(intent)
+
+           }
+
         })
 
 
@@ -78,9 +91,9 @@ class UserAdapter(
                                 }
                             }
                         }
+                    addNotification(user.getUid())
                 }
-            }
-                else{
+            } else {
                 firebaseUser?.uid.let { it ->
                     FirebaseDatabase.getInstance().reference
                         .child("Follow").child(it.toString())
@@ -100,26 +113,25 @@ class UserAdapter(
                             }
                         }
                 }
-                }
             }
-
         }
+
+    }
 
     private fun checkFollowingStatus(uid: String, followBtn: Button) {
 
-       val followingRef = firebaseUser?.uid.let { it ->
+        val followingRef = firebaseUser?.uid.let { it ->
             FirebaseDatabase.getInstance().reference
                 .child("Follow").child(it.toString())
                 .child("Following")
-       }
+        }
 
-        followingRef.addValueEventListener(object : ValueEventListener{
+        followingRef.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-                if (snapshot.child(uid).exists()){
+                if (snapshot.child(uid).exists()) {
                     followBtn.text = "Following"
-                }
-                else{
-                    followBtn.text="Follow"
+                } else {
+                    followBtn.text = "Follow"
                 }
             }
 
@@ -132,17 +144,32 @@ class UserAdapter(
 
 
     override fun getItemCount(): Int {
-            return mUser.size
-        }
+        return mUser.size
+    }
 
-        class ViewHolder(@NonNull itemView: View) : RecyclerView.ViewHolder(itemView) {
-            var username: TextView = itemView.findViewById(R.id.tv_username_search)
-            var fullname: TextView = itemView.findViewById(R.id.tv_fullname_search)
-            var user_profile_image: CircleImageView =
-                itemView.findViewById(R.id.civ_user_profile_image_search)
-            var follow_btn: Button = itemView.findViewById(R.id.btn_follow_search)
-
-        }
-
+     class ViewHolder(@NonNull itemView: View) : RecyclerView.ViewHolder(itemView) {
+        var username: TextView = itemView.findViewById(R.id.tv_username_search)
+        var fullname: TextView = itemView.findViewById(R.id.tv_fullname_search)
+        var user_profile_image: CircleImageView =
+            itemView.findViewById(R.id.civ_user_profile_image_search)
+        var follow_btn: Button = itemView.findViewById(R.id.btn_follow_search)
 
     }
+
+    private fun addNotification(userId: String) {
+        //osoba koja ce primiti obavijest
+        val notiRef = FirebaseDatabase.getInstance().reference.child("Notifications")
+            .child(userId)
+
+        val notiMap = HashMap<String, Any>()
+        // osoba koja lajka post
+        notiMap["userId"] = firebaseUser!!.uid
+        notiMap["text"] = "started following you"
+        notiMap["postId"] = ""
+        notiMap["isPost"] = false
+
+        notiRef.push().setValue(notiMap)
+
+    }
+}
+

@@ -80,11 +80,10 @@
                 android:id="@+id/post_save_comment_btn"
                 android:layout_width="40dp"
                 android:layout_height="39dp"
-                android:src="@drawable/save_unfilled_large_icon"
                 android:layout_alignParentEnd="true"
                 android:layout_marginTop="0dp"
                 android:layout_marginRight="3dp"
-                />
+                android:src="@drawable/save_unfilled_large_icon" />
 
         </RelativeLayout>
 

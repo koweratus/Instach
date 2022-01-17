@@ -41,7 +41,7 @@ class SearchFragment : Fragment() {
         recyclerView?.layoutManager = LinearLayoutManager(context)
 
         mUser = ArrayList()
-        userAdapter = context?.let{ UserAdapter(it, mUser as ArrayList<User>, true,findNavController()) }
+        userAdapter = context?.let{ UserAdapter(it, mUser as ArrayList<User>, true) }
         recyclerView?.adapter = userAdapter
 
         binding.etSearch.addTextChangedListener(object : TextWatcher{

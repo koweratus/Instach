@@ -9,7 +9,8 @@
         <entry key="..\:/Users/User/AndroidStudioProjects/Instach/app/src/main/res/layout/activity_account_settings.xml" value="0.25" />
         <entry key="..\:/Users/User/AndroidStudioProjects/Instach/app/src/main/res/layout/activity_add_post.xml" value="0.22" />
         <entry key="..\:/Users/User/AndroidStudioProjects/Instach/app/src/main/res/layout/activity_comments.xml" value="0.10099637681159421" />
-        <entry key="..\:/Users/User/AndroidStudioProjects/Instach/app/src/main/res/layout/activity_main.xml" value="0.22" />
+        <entry key="..\:/Users/User/AndroidStudioProjects/Instach/app/src/main/res/layout/activity_main.xml" value="0.1" />
+        <entry key="..\:/Users/User/AndroidStudioProjects/Instach/app/src/main/res/layout/activity_show_users.xml" value="0.1" />
         <entry key="..\:/Users/User/AndroidStudioProjects/Instach/app/src/main/res/layout/activity_sign_in.xml" value="0.23505434782608695" />
         <entry key="..\:/Users/User/AndroidStudioProjects/Instach/app/src/main/res/layout/activity_sign_up.xml" value="0.1" />
         <entry key="..\:/Users/User/AndroidStudioProjects/Instach/app/src/main/res/layout/comments_item_layout.xml" value="0.1" />
@@ -20,8 +21,11 @@
         <entry key="..\:/Users/User/AndroidStudioProjects/Instach/app/src/main/res/layout/fragment_first.xml" value="0.26197916666666665" />
         <entry key="..\:/Users/User/AndroidStudioProjects/Instach/app/src/main/res/layout/fragment_home.xml" value="0.22" />
         <entry key="..\:/Users/User/AndroidStudioProjects/Instach/app/src/main/res/layout/fragment_notifications.xml" value="0.1" />
+        <entry key="..\:/Users/User/AndroidStudioProjects/Instach/app/src/main/res/layout/fragment_post_details.xml" value="0.1425925925925926" />
         <entry key="..\:/Users/User/AndroidStudioProjects/Instach/app/src/main/res/layout/fragment_profile.xml" value="0.300561797752809" />
         <entry key="..\:/Users/User/AndroidStudioProjects/Instach/app/src/main/res/layout/fragment_search.xml" value="0.25" />
+        <entry key="..\:/Users/User/AndroidStudioProjects/Instach/app/src/main/res/layout/images_item_layout.xml" value="0.1425925925925926" />
+        <entry key="..\:/Users/User/AndroidStudioProjects/Instach/app/src/main/res/layout/notifications_item_layout.xml" value="0.22" />
         <entry key="..\:/Users/User/AndroidStudioProjects/Instach/app/src/main/res/layout/post_layout.xml" value="0.33" />
         <entry key="..\:/Users/User/AndroidStudioProjects/Instach/app/src/main/res/layout/user_item_layout.xml" value="0.33" />
         <entry key="..\:/Users/User/AndroidStudioProjects/Instach/app/src/main/res/menu/bottom_nav_menu.xml" value="0.1" />

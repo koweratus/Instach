@@ -8,12 +8,14 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.annotation.NonNull
+import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.example.instach.CommentsActivity
 import com.example.instach.MainActivity
 import com.example.instach.Model.Post
 import com.example.instach.Model.User
 import com.example.instach.R
+import com.example.instach.ShowUsersActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.DataSnapshot
@@ -71,11 +73,18 @@ class PostAdapter(private val mContext: Context, private val mPost: List<Post>) 
         val post = mPost[position]
         Picasso.get().load(post.getPostImage()).into(holder.postImage)
 
-        if (post.getDescription().equals("")){
+        if (post.getDescription().equals("")) {
             holder.description.visibility = View.GONE
-        }else{
+        } else {
             holder.description.visibility = View.VISIBLE
             holder.description.text = post.getDescription()
+        }
+
+        holder.likes.setOnClickListener{
+            val intent = Intent(mContext, ShowUsersActivity::class.java)
+            intent.putExtra("id",post.getPostId())
+            intent.putExtra("title", "likes")
+            mContext.startActivity(intent)
         }
 
         publisherInfo(holder.profileImage, holder.userName, holder.publisher, post.getPublisher())
@@ -83,6 +92,7 @@ class PostAdapter(private val mContext: Context, private val mPost: List<Post>) 
 
         numberOfLikes(holder.likes, post.getPostId())
         getTotalNumberComment(holder.comments, post.getPostId())
+        checkSavedStatus(post.getPostId(), holder.saveButton)
 
         holder.likeBtn.setOnClickListener {
             if (holder.likeBtn.tag == "Like") {
@@ -91,6 +101,7 @@ class PostAdapter(private val mContext: Context, private val mPost: List<Post>) 
                     .child(post.getPostId())
                     .child(firebaseUser!!.uid)
                     .setValue(true)
+                addNotification(post.getPublisher(),post.getPostId())
             } else {
                 FirebaseDatabase.getInstance().reference
                     .child("Likes")
@@ -104,7 +115,7 @@ class PostAdapter(private val mContext: Context, private val mPost: List<Post>) 
             }
         }
 
-        holder.commentBtn.setOnClickListener{
+        holder.commentBtn.setOnClickListener {
             val intentComment = Intent(mContext, CommentsActivity::class.java)
             intentComment.putExtra("postId", post.getPostId())
             intentComment.putExtra("publisherId", post.getPublisher())
@@ -112,11 +123,23 @@ class PostAdapter(private val mContext: Context, private val mPost: List<Post>) 
 
         }
 
-        holder.comments.setOnClickListener{
+        holder.comments.setOnClickListener {
             val intentComment = Intent(mContext, CommentsActivity::class.java)
             intentComment.putExtra("postId", post.getPostId())
             intentComment.putExtra("publisherId", post.getPublisher())
             mContext.startActivity(intentComment)
+
+        }
+
+        holder.saveButton.setOnClickListener {
+
+            if (holder.saveButton.tag == "Save"){
+                FirebaseDatabase.getInstance().reference.child("Saves").child(firebaseUser!!.uid)
+                    .child(post.getPostId()).setValue(true)
+            }else{
+                FirebaseDatabase.getInstance().reference.child("Saves").child(firebaseUser!!.uid)
+                    .child(post.getPostId()).removeValue()
+            }
 
         }
     }
@@ -129,7 +152,7 @@ class PostAdapter(private val mContext: Context, private val mPost: List<Post>) 
         likesRef.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 if (snapshot.exists()) {
-                   likes.text = snapshot.childrenCount.toString() + " likes"
+                    likes.text = snapshot.childrenCount.toString() + " likes"
                 }
             }
 
@@ -147,7 +170,7 @@ class PostAdapter(private val mContext: Context, private val mPost: List<Post>) 
         commentsRef.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 if (snapshot.exists()) {
-                    comments.text ="view all " + snapshot.childrenCount.toString() + " comments"
+                    comments.text = "view all " + snapshot.childrenCount.toString() + " comments"
                 }
             }
 
@@ -211,5 +234,44 @@ class PostAdapter(private val mContext: Context, private val mPost: List<Post>) 
         return mPost.size
     }
 
+    private fun checkSavedStatus(postId: String, imageView: ImageView){
+        val saveRef =
+            FirebaseDatabase.getInstance().reference.child("Saves").child(firebaseUser!!.uid)
+
+        saveRef.addValueEventListener(object : ValueEventListener{
+            override fun onDataChange(snapshot: DataSnapshot) {
+                if (snapshot.child(postId).exists()){
+                    imageView.setImageResource(R.drawable.save_large_icon)
+                    imageView.tag = "Saved"
+                }
+                else
+                {
+                    imageView.setImageResource(R.drawable.save_unfilled_large_icon)
+                    imageView.tag = "Save"
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+
+            }
+        })
+    }
+
+    private fun addNotification(userId: String, postId: String)
+    {
+        //osoba koja ce primiti obavijest
+        val notiRef = FirebaseDatabase.getInstance().reference.child("Notifications")
+            .child(userId)
+
+        val notiMap = HashMap<String, Any>()
+        // osoba koja lajka post
+        notiMap["userId"] = firebaseUser!!.uid
+        notiMap["text"] = "liked your post"
+        notiMap["postId"] = postId
+        notiMap["isPost"] = true
+
+        notiRef.push().setValue(notiMap)
+
+    }
 
 }
