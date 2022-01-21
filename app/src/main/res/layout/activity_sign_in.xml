@@ -34,15 +34,15 @@
         android:id="@+id/et_password_login"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/inputs_background"
-        android:padding="10dp"
         android:layout_below="@+id/et_email_login"
         android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
         android:layout_marginTop="6dp"
-        android:inputType="textPassword"
+        android:layout_marginRight="20dp"
+        android:background="@drawable/inputs_background"
         android:hint="Password.."
-        android:maxLines="1"/>
+        android:inputType="textPassword"
+        android:maxLines="1"
+        android:padding="10dp" />
 
 
     <Button
@@ -59,6 +59,33 @@
         android:textSize="17sp"
         android:textColor="@android:color/black"/>
 
+    <Button
+        android:id="@+id/google_login_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/btn_login"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/rounded_corners"
+        android:drawableLeft="@drawable/google"
+        android:padding="8dp"
+        android:text="Log in with Google"
+        android:textAllCaps="false"
+        android:textColor="@color/white" />
+
+    <Button
+        android:id="@+id/github_login_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/rounded_corners"
+        android:drawableLeft="@drawable/github_icon"
+        android:padding="8dp"
+        android:layout_below="@+id/google_login_btn"
+        android:text="Log in with GitHub"
+        android:textAllCaps="false"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:textColor="@android:color/white" />
 
     <Button
         android:id="@+id/btn_signup_link"
@@ -74,4 +101,6 @@
         android:textSize="17sp"
         android:layout_alignParentBottom="true"
         android:textColor="@android:color/white"/>
+
+
 </RelativeLayout>
