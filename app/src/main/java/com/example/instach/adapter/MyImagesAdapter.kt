@@ -1,20 +1,15 @@
-package com.example.instach.Adapter
+package com.example.instach.adapter
 
 import android.content.Context
-import android.media.Image
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.annotation.NonNull
-import androidx.appcompat.view.menu.MenuView
-import androidx.fragment.app.FragmentActivity
 import androidx.navigation.findNavController
-import androidx.navigation.fragment.NavHostFragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
-import com.example.instach.Model.Post
+import com.example.instach.model.Post
 import com.example.instach.R
-import com.example.instach.ui.PostDetailsFragment
 import com.squareup.picasso.Picasso
 
 class MyImagesAdapter(private val mContext: Context, mPost: List<Post>): RecyclerView.Adapter<MyImagesAdapter.ViewHolder?>() {

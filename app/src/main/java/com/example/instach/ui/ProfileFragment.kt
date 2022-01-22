@@ -12,9 +12,9 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.instach.AccountSettingsActivity
-import com.example.instach.Adapter.MyImagesAdapter
-import com.example.instach.Model.Post
-import com.example.instach.Model.User
+import com.example.instach.adapter.MyImagesAdapter
+import com.example.instach.model.Post
+import com.example.instach.model.User
 import com.example.instach.R
 import com.example.instach.ShowUsersActivity
 import com.example.instach.databinding.FragmentProfileBinding
@@ -284,6 +284,7 @@ class ProfileFragment : Fragment() {
 
                     for (snapshots in snapshot.children) {
                         val post = snapshots.getValue(Post::class.java)!!
+
                         if (post.getPublisher().equals(profileId)) {
                             (postList as ArrayList<Post>).add(post)
                             Collections.reverse(postList)

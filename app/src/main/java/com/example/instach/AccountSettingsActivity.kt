@@ -8,10 +8,8 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
 import android.widget.Toast
-import com.bumptech.glide.Glide
-import com.example.instach.Model.User
+import com.example.instach.model.User
 import com.example.instach.databinding.ActivityAccountSettingsBinding
-import com.example.instach.databinding.ActivitySignInBinding
 import com.google.android.gms.tasks.Continuation
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.gms.tasks.Task

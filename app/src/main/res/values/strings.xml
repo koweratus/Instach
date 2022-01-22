@@ -18,4 +18,9 @@
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
     <string name="title_add_post">Add post</string>
     <string name="webclient_id">496848978593-m1fhe4lhu7uskmiahg4ppnthq5jpfqf2.apps.googleusercontent.com</string>
+    <string name="enter_your_email">Enter your email</string>
+    <string name="enter_your_password">Enter your password</string>
+    <string name="login">Login</string>
+    <string name="log_in_with_google">Log in with Google</string>
+    <string name="log_in_with_github">Log in with GitHub</string>
 </resources>

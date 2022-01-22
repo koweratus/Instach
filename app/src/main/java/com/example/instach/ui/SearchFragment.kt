@@ -7,11 +7,10 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.instach.Adapter.UserAdapter
-import com.example.instach.Model.User
+import com.example.instach.adapter.UserAdapter
+import com.example.instach.model.User
 import com.example.instach.databinding.FragmentSearchBinding
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError

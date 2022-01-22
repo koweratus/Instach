@@ -1,4 +1,4 @@
-package com.example.instach.Adapter
+package com.example.instach.adapter
 
 import android.content.Context
 import android.content.Intent
@@ -8,16 +8,11 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
 import androidx.annotation.NonNull
-import androidx.fragment.app.Fragment
-import androidx.navigation.NavController
 import androidx.navigation.findNavController
-import androidx.navigation.fragment.NavHostFragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
-import com.example.instach.Model.User
+import com.example.instach.model.User
 import com.example.instach.R
-import androidx.navigation.fragment.findNavController
 import com.example.instach.MainActivity
-import com.example.instach.ui.SearchFragment
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.DataSnapshot

@@ -1,16 +1,14 @@
 package com.example.instach.ui
 
-import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.instach.Adapter.NotificationAdapter
-import com.example.instach.Model.Notification
+import com.example.instach.adapter.NotificationAdapter
+import com.example.instach.model.Notification
 import com.example.instach.databinding.FragmentNotificationsBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot

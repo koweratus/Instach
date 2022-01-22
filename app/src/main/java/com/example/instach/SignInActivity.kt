@@ -42,6 +42,11 @@ import java.net.URL
 import java.util.concurrent.TimeUnit
 import javax.net.ssl.HttpsURLConnection
 import androidx.annotation.NonNull
+import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.ViewModelProvider
+import com.example.instach.`interface`.LoginResultCallBacks
+import com.example.instach.viewModel.LoginViewModel
+import com.example.instach.viewModel.LoginViewModelFactory
 
 import com.google.android.gms.tasks.OnFailureListener
 
@@ -53,45 +58,36 @@ import com.google.android.gms.tasks.Task
 
 const val REQUEST_CODE_SIGN_IN = 0
 
-class SignInActivity : AppCompatActivity() {
+class SignInActivity : AppCompatActivity(), LoginResultCallBacks {
 
     private lateinit var binding: ActivitySignInBinding
     private lateinit var auth: FirebaseAuth
-    lateinit var githubAuthURLFull: String
-    lateinit var githubdialog: Dialog
     var provider = OAuthProvider.newBuilder("github.com")
-
-    var id = ""
-    var displayName = ""
-    var email = ""
-    var avatar = ""
-    var accessToken = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        auth = FirebaseAuth.getInstance()
-        binding = ActivitySignInBinding.inflate(layoutInflater)
-        setContentView(binding.root)
-        val state = TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis())
 
-        githubAuthURLFull =
-            GithubConstants.AUTHURL + "?client_id=" + GithubConstants.CLIENT_ID + "&scope=" + GithubConstants.SCOPE + "&redirect_uri=" + GithubConstants.REDIRECT_URI + "&state=" + state
+        auth = FirebaseAuth.getInstance()
+        binding = DataBindingUtil.setContentView<ActivitySignInBinding>(this,R.layout.activity_sign_in)
+        binding.viewModel = ViewModelProvider(
+            this,
+            LoginViewModelFactory(this)
+        )[LoginViewModel::class.java]
 
 
         binding.btnSignupLink.setOnClickListener {
             startActivity(Intent(this, SignUpActivity::class.java))
         }
 
-
-        binding.btnLogin.setOnClickListener{
+        binding.btnLogin.setOnClickListener {
             loginUser()
         }
 
-        binding.githubLoginBtn.setOnClickListener{
+        binding.githubLoginBtn.setOnClickListener {
             githubAuthForFirebase()
         }
 
-       binding.googleLoginBtn.setOnClickListener {
+        binding.googleLoginBtn.setOnClickListener {
             val options = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.webclient_id))
                 .requestEmail()
@@ -114,13 +110,17 @@ class SignInActivity : AppCompatActivity() {
         }
     }
 
-    private fun githubAuthForFirebase(){
+    private fun githubAuthForFirebase() {
         auth
             .startActivityForSignInWithProvider( /* activity= */this, provider.build())
             .addOnSuccessListener(
                 OnSuccessListener<AuthResult?> {
 
-                    saveGoogleInfo(it.additionalUserInfo?.username!!,it.additionalUserInfo?.username!!,it.user?.email!!)
+                    saveGoogleInfo(
+                        it.additionalUserInfo?.username!!,
+                        it.additionalUserInfo?.username!!,
+                        it.user?.email!!
+                    )
                     val intent = Intent(this, MainActivity::class.java)
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
                     startActivity(intent)
@@ -140,7 +140,11 @@ class SignInActivity : AppCompatActivity() {
             try {
                 auth.signInWithCredential(credentials).await()
                 withContext(Dispatchers.Main) {
-                    saveGoogleInfo(account.givenName.toString(),account.displayName.toString(),account.email.toString() )
+                    saveGoogleInfo(
+                        account.givenName.toString(),
+                        account.displayName.toString(),
+                        account.email.toString()
+                    )
                     val intent = Intent(this@SignInActivity, MainActivity::class.java)
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
                     startActivity(intent)
@@ -163,48 +167,32 @@ class SignInActivity : AppCompatActivity() {
         val email = binding.etEmailLogin.text.toString()
         val password = binding.etPasswordLogin.text.toString()
 
-        when {
 
-            TextUtils.isEmpty(email) -> Toast.makeText(
-                this,
-                "email is required.",
-                Toast.LENGTH_LONG
-            ).show()
-            TextUtils.isEmpty(password) -> Toast.makeText(
-                this,
-                "password is required.",
-                Toast.LENGTH_LONG
-            ).show()
-
-            else -> {
-                val progressDialog = ProgressDialog(this@SignInActivity)
-                progressDialog.setTitle("Login")
-                progressDialog.setMessage("Please wait, this may take a while...")
-                progressDialog.setCanceledOnTouchOutside(false)
-                progressDialog.show()
-                val mAuth: FirebaseAuth = FirebaseAuth.getInstance()
-                mAuth.signInWithEmailAndPassword(email, password)
-                    .addOnCompleteListener { task ->
-                        if (task.isSuccessful) {
-                            val intent = Intent(this@SignInActivity, MainActivity::class.java)
-                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
-                            startActivity(intent)
-                            finish()
-                        } else {
-                            val message = task.exception!!.toString()
-                            Toast.makeText(
-                                this,
-                                "Erorr: $message",
-                                Toast.LENGTH_LONG
-                            ).show()
-                            mAuth.signOut()
-                            progressDialog.dismiss()
-                        }
-                    }
+        val progressDialog = ProgressDialog(this@SignInActivity)
+        progressDialog.setTitle("Login")
+        progressDialog.setMessage("Please wait, this may take a while...")
+        progressDialog.setCanceledOnTouchOutside(false)
+        progressDialog.show()
+        val mAuth: FirebaseAuth = FirebaseAuth.getInstance()
+        mAuth.signInWithEmailAndPassword(email, password)
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    val intent = Intent(this@SignInActivity, MainActivity::class.java)
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
+                    startActivity(intent)
+                    finish()
+                } else {
+                    val message = task.exception!!.toString()
+                    Toast.makeText(
+                        this,
+                        "Erorr: $message",
+                        Toast.LENGTH_LONG
+                    ).show()
+                    mAuth.signOut()
+                    progressDialog.dismiss()
+                }
             }
-        }
     }
-
 
 
     private fun saveGoogleInfo(
@@ -264,5 +252,13 @@ class SignInActivity : AppCompatActivity() {
     override fun onDestroy() {
         super.onDestroy()
 
+    }
+
+    override fun onSuccess(message: String) {
+        loginUser()
+    }
+
+    override fun onError(message: String) {
+        Toast.makeText(this,message,Toast.LENGTH_LONG).show()
     }
 }

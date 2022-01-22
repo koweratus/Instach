@@ -6,12 +6,10 @@ import android.view.View
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.instach.Adapter.CommentsAdapter
-import com.example.instach.Model.Comment
-import com.example.instach.Model.Post
-import com.example.instach.Model.User
+import com.example.instach.adapter.CommentsAdapter
+import com.example.instach.model.Comment
+import com.example.instach.model.User
 import com.example.instach.databinding.ActivityCommentsBinding
-import com.example.instach.databinding.ActivitySignInBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.DataSnapshot

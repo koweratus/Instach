@@ -8,11 +8,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.instach.Adapter.PostAdapter
-import com.example.instach.Model.Post
-import com.example.instach.R
+import com.example.instach.adapter.PostAdapter
+import com.example.instach.model.Post
 import com.example.instach.databinding.FragmentPostDetailsBinding
-import com.example.instach.databinding.FragmentProfileBinding
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase

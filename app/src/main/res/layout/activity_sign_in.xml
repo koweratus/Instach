@@ -1,106 +1,123 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@drawable/back_ui"
-    tools:context=".SignInActivity">
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <ImageView
-        android:id="@+id/logo"
-        android:layout_width="160dp"
-        android:layout_height="90dp"
-        android:src="@drawable/instagram"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="180dp"
-        app:tint="@color/white" />
+    <data>
+        <variable
+            name="viewModel"
+            type="com.example.instach.viewModel.LoginViewModel" />
+        <variable
+            name="onTextChanged"
+            type="androidx.databinding.adapters.TextViewBindingAdapter.OnTextChanged" />
+    </data>
 
-    <EditText
-        android:id="@+id/et_email_login"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/inputs_background"
-        android:padding="10dp"
-        android:layout_below="@+id/logo"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:layout_marginTop="6dp"
-        android:inputType="textEmailAddress"
-        android:hint="Email.."
-        android:maxLines="1"/>
-
-    <EditText
-        android:id="@+id/et_password_login"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/et_email_login"
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="6dp"
-        android:layout_marginRight="20dp"
-        android:background="@drawable/inputs_background"
-        android:hint="Password.."
-        android:inputType="textPassword"
-        android:maxLines="1"
-        android:padding="10dp" />
+        android:layout_height="match_parent"
+        android:background="@drawable/back_ui"
+        tools:context=".SignInActivity">
 
 
-    <Button
-        android:id="@+id/btn_login"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/et_password_login"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:layout_marginTop="6dp"
-        android:background="@android:color/white"
-        android:text="Login"
-        android:textAllCaps="false"
-        android:textSize="17sp"
-        android:textColor="@android:color/black"/>
+        <ImageView
+            android:id="@+id/logo"
+            android:layout_width="160dp"
+            android:layout_height="90dp"
+            android:src="@drawable/instagram"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="180dp"
+            app:tint="@color/white" />
 
-    <Button
-        android:id="@+id/google_login_btn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/btn_login"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="20dp"
-        android:background="@drawable/rounded_corners"
-        android:drawableLeft="@drawable/google"
-        android:padding="8dp"
-        android:text="Log in with Google"
-        android:textAllCaps="false"
-        android:textColor="@color/white" />
+        <EditText
+            android:id="@+id/et_email_login"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/inputs_background"
+            android:padding="10dp"
+            android:layout_below="@+id/logo"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="6dp"
+            android:inputType="textEmailAddress"
+            android:hint="@string/enter_your_email"
+            app:addTextChangedListener="@{viewModel.emailTextWatcher}"
+            android:maxLines="1" />
 
-    <Button
-        android:id="@+id/github_login_btn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@drawable/rounded_corners"
-        android:drawableLeft="@drawable/github_icon"
-        android:padding="8dp"
-        android:layout_below="@+id/google_login_btn"
-        android:text="Log in with GitHub"
-        android:textAllCaps="false"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="20dp"
-        android:textColor="@android:color/white" />
-
-    <Button
-        android:id="@+id/btn_signup_link"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:layout_marginTop="6dp"
-        android:layout_marginBottom="10dp"
-        android:background="@color/purple_500"
-        android:text="Need New Account? Sign Up "
-        android:textAllCaps="false"
-        android:textSize="17sp"
-        android:layout_alignParentBottom="true"
-        android:textColor="@android:color/white"/>
+        <EditText
+            android:id="@+id/et_password_login"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/et_email_login"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="6dp"
+            android:layout_marginRight="20dp"
+            android:background="@drawable/inputs_background"
+            android:hint="@string/enter_your_password"
+            android:inputType="textPassword"
+            android:maxLines="1"
+            app:addTextChangedListener="@{viewModel.passwordTextWatcher}"
+            android:padding="10dp" />
 
 
-</RelativeLayout>
+        <Button
+            android:id="@+id/btn_login"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/et_password_login"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="6dp"
+            android:background="@android:color/white"
+            android:text="@string/login"
+            android:textAllCaps="false"
+            android:textSize="17sp"
+            android:textColor="@android:color/black"
+            android:onClick="@{viewModel.onLoginClicked}"
+            />
+
+        <Button
+            android:id="@+id/google_login_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/btn_login"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/rounded_corners"
+            android:drawableLeft="@drawable/google"
+            android:padding="8dp"
+            android:text="@string/log_in_with_google"
+            android:textAllCaps="false"
+            android:textColor="@color/white" />
+
+        <Button
+            android:id="@+id/github_login_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/rounded_corners"
+            android:drawableLeft="@drawable/github_icon"
+            android:padding="8dp"
+            android:layout_below="@+id/google_login_btn"
+            android:text="@string/log_in_with_github"
+            android:textAllCaps="false"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="20dp"
+            android:textColor="@android:color/white" />
+
+        <Button
+            android:id="@+id/btn_signup_link"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="6dp"
+            android:layout_marginBottom="10dp"
+            android:background="@color/purple_500"
+            android:text="Need New Account? Sign Up "
+            android:textAllCaps="false"
+            android:textSize="17sp"
+            android:layout_alignParentBottom="true"
+            android:textColor="@android:color/white" />
+
+
+    </RelativeLayout>
+</layout>

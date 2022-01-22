@@ -1,4 +1,4 @@
-package com.example.instach.Adapter
+package com.example.instach.adapter
 
 import android.content.Context
 import android.content.Intent
@@ -8,12 +8,11 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.annotation.NonNull
-import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.example.instach.CommentsActivity
 import com.example.instach.MainActivity
-import com.example.instach.Model.Post
-import com.example.instach.Model.User
+import com.example.instach.model.Post
+import com.example.instach.model.User
 import com.example.instach.R
 import com.example.instach.ShowUsersActivity
 import com.google.firebase.auth.FirebaseAuth

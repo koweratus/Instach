@@ -2,14 +2,11 @@ package com.example.instach
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.Toolbar
-import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.instach.Adapter.UserAdapter
-import com.example.instach.Model.User
+import com.example.instach.adapter.UserAdapter
+import com.example.instach.model.User
 import com.example.instach.databinding.ActivityShowUsersBinding
-import com.example.instach.databinding.ActivitySignInBinding
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase

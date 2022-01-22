@@ -1,4 +1,4 @@
-package com.example.instach.Model
+package com.example.instach.model
 
 class Comment {
 

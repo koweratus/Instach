@@ -1,6 +1,5 @@
-package com.example.instach.Adapter
+package com.example.instach.adapter
 
-import android.app.Notification
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
@@ -10,8 +9,8 @@ import android.widget.TextView
 import androidx.annotation.NonNull
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
-import com.example.instach.Model.Post
-import com.example.instach.Model.User
+import com.example.instach.model.Post
+import com.example.instach.model.User
 import com.example.instach.R
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -22,7 +21,7 @@ import de.hdodenhof.circleimageview.CircleImageView
 
 class NotificationAdapter(
     private val mContext: Context,
-    private val mNotification: List<com.example.instach.Model.Notification>
+    private val mNotification: List<com.example.instach.model.Notification>
 ) :
     RecyclerView.Adapter<NotificationAdapter.ViewHolder>() {
 
