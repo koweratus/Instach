@@ -7,9 +7,6 @@
         <variable
             name="viewModel"
             type="com.example.instach.viewModel.LoginViewModel" />
-        <variable
-            name="onTextChanged"
-            type="androidx.databinding.adapters.TextViewBindingAdapter.OnTextChanged" />
     </data>
 
     <RelativeLayout

@@ -1,6 +1,8 @@
 package com.example.instach.model
 
-class Comment {
+import com.example.instach.NotificationTypeStrategy
+
+class Comment : NotificationTypeStrategy {
 
     private var comment: String = ""
     private var publisher: String = ""
@@ -27,4 +29,7 @@ class Comment {
         this.publisher = publisher
     }
 
+    override fun notificationMode(): String {
+        return "commented:"
+    }
 }

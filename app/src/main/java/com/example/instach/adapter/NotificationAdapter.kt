@@ -9,9 +9,12 @@ import android.widget.TextView
 import androidx.annotation.NonNull
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
+import com.example.instach.NotificationChannel
 import com.example.instach.model.Post
 import com.example.instach.model.User
 import com.example.instach.R
+import com.example.instach.model.Comment
+import com.example.instach.model.Notification
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
@@ -52,14 +55,15 @@ class NotificationAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val notifcation = mNotification[position]
+        val notifcationMode = NotificationChannel(Notification())
 
-        if(notifcation.getText().equals("started following you"))
+        if(notifcation.getText().equals(notifcationMode))
         {
-            holder.text.text = "started following you"
-        }else if(notifcation.getText().equals("liked your post")){
-            holder.text.text = "liked your post"
+            holder.text.text = mContext.getString(R.string.started_following_you)
+        }else if(notifcation.getText().equals(notifcationMode.update(Post()))){
+            holder.text.text = mContext.getString(R.string.liked_your_post)
 
-        }else if(notifcation.getText().contains("commented:")){
+        }else if(notifcation.getText().equals(notifcationMode.update(Comment()))){
             holder.text.text = notifcation.getText()
                 .replace("commented:","commented : ")
 

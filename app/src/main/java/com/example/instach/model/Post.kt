@@ -1,6 +1,8 @@
 package com.example.instach.model
 
-class Post {
+import com.example.instach.NotificationTypeStrategy
+
+class Post : NotificationTypeStrategy {
 
     private var postId: String = ""
 
@@ -44,6 +46,10 @@ class Post {
     }
     fun setDescription(description: String){
         this.description = description
+    }
+
+    override fun notificationMode(): String {
+        return "liked your post"
     }
 
 }

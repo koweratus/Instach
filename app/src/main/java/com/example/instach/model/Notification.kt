@@ -1,6 +1,8 @@
 package com.example.instach.model
 
-class Notification {
+import com.example.instach.NotificationTypeStrategy
+
+class Notification : NotificationTypeStrategy{
 
     private var userId: String = ""
     private var text: String = ""
@@ -43,4 +45,7 @@ class Notification {
         this.isPost = isPost
     }
 
+    override fun notificationMode(): String {
+        return "started following you"
+    }
 }

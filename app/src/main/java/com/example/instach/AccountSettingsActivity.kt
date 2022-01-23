@@ -70,8 +70,6 @@ class AccountSettingsActivity : AppCompatActivity() {
 
     private fun uploadImageAndUpdateInfo() {
 
-
-
         when{
             binding.etFullname.text.toString() == "" -> {
                 Toast.makeText(this, "Please write full name first", Toast.LENGTH_SHORT).show()

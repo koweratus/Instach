@@ -3,12 +3,11 @@ package com.example.instach.viewModel
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
-import androidx.databinding.BindingAdapter
 import androidx.lifecycle.ViewModel
 import com.example.instach.`interface`.LoginResultCallBacks
 import com.example.instach.model.User
 
-class LoginViewModel(private val listener: LoginResultCallBacks) : ViewModel() {
+class RegisterViewModel(private val listener: LoginResultCallBacks) : ViewModel() {
 
     private val user: User
 
@@ -81,10 +80,12 @@ class LoginViewModel(private val listener: LoginResultCallBacks) : ViewModel() {
             listener.onError("Wrong email pattern")
         } else if (loginCode == 2) {
             listener.onError("Password must be greater than 6")
+        } else if (loginCode == 3) {
+            listener.onError("Username must not be empty")
+        } else if (loginCode == 4) {
+            listener.onError("Full name must not be empty")
         } else {
             listener.onSuccess("Login Successful")
         }
     }
-
-
 }

@@ -62,6 +62,7 @@ class SignInActivity : AppCompatActivity(), LoginResultCallBacks {
 
     private lateinit var binding: ActivitySignInBinding
     private lateinit var auth: FirebaseAuth
+
     var provider = OAuthProvider.newBuilder("github.com")
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -92,6 +93,8 @@ class SignInActivity : AppCompatActivity(), LoginResultCallBacks {
                 .requestIdToken(getString(R.string.webclient_id))
                 .requestEmail()
                 .build()
+
+
             val signInClient = GoogleSignIn.getClient(this, options)
             signInClient.signInIntent.also {
                 startActivityForResult(it, REQUEST_CODE_SIGN_IN)
@@ -182,7 +185,7 @@ class SignInActivity : AppCompatActivity(), LoginResultCallBacks {
                     startActivity(intent)
                     finish()
                 } else {
-                    val message = task.exception!!.toString()
+                    val message = "this user does not exist"
                     Toast.makeText(
                         this,
                         "Erorr: $message",

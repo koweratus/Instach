@@ -6,27 +6,37 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.TextUtils
 import android.widget.Toast
+import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.ViewModelProvider
+import com.example.instach.`interface`.LoginResultCallBacks
+import com.example.instach.databinding.ActivitySignInBinding
 import com.example.instach.databinding.ActivitySignUpBinding
+import com.example.instach.viewModel.LoginViewModel
+import com.example.instach.viewModel.LoginViewModelFactory
+import com.example.instach.viewModel.RegisterViewModel
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 
-class SignUpActivity : AppCompatActivity() {
+class SignUpActivity : AppCompatActivity(), LoginResultCallBacks {
 
     private lateinit var binding: ActivitySignUpBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        binding = ActivitySignUpBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+        binding = DataBindingUtil.setContentView<ActivitySignUpBinding>(this, R.layout.activity_sign_up)
+        binding.viewModel = ViewModelProvider(
+            this,
+            LoginViewModelFactory(this)
+        )[LoginViewModel::class.java]
+
+
         binding.btnSigninLink.setOnClickListener {
             startActivity(Intent(this, SignInActivity::class.java))
         }
 
-        binding.btnLogin.setOnClickListener {
-            CreateAccount()
-        }
+
     }
 
     private fun CreateAccount() {
@@ -35,52 +45,30 @@ class SignUpActivity : AppCompatActivity() {
         val email = binding.etEmailSignup.text.toString()
         val password = binding.etPasswordLogin.text.toString()
 
-        when {
-            TextUtils.isEmpty(fullname) -> Toast.makeText(
-                this,
-                "full name is required.",
-                Toast.LENGTH_LONG
-            ).show()
-            TextUtils.isEmpty(username) -> Toast.makeText(
-                this,
-                "username is required.",
-                Toast.LENGTH_LONG
-            ).show()
-            TextUtils.isEmpty(email) -> Toast.makeText(
-                this,
-                "email is required.",
-                Toast.LENGTH_LONG
-            ).show()
-            TextUtils.isEmpty(password) -> Toast.makeText(
-                this,
-                "password is required.",
-                Toast.LENGTH_LONG
-            ).show()
-            else -> {
-                val progressDialog = ProgressDialog(this@SignUpActivity)
-                progressDialog.setTitle("SignUp")
-                progressDialog.setMessage("Please wait, this may take a while...")
-                progressDialog.setCanceledOnTouchOutside(false)
-                progressDialog.show()
-                val mAuth: FirebaseAuth = FirebaseAuth.getInstance()
-                mAuth.createUserWithEmailAndPassword(email, password)
-                    .addOnCompleteListener { task ->
-                        if (task.isSuccessful) {
-                            saveUserInfo(username, fullname, email, progressDialog)
-                        } else {
-                            val message = task.exception!!.toString()
-                            Toast.makeText(
-                                this,
-                                "Erorr: $message",
-                                Toast.LENGTH_LONG
-                            ).show()
-                            mAuth.signOut()
-                            progressDialog.dismiss()
-                        }
-                    }
+
+        val progressDialog = ProgressDialog(this@SignUpActivity)
+        progressDialog.setTitle("SignUp")
+        progressDialog.setMessage("Please wait, this may take a while...")
+        progressDialog.setCanceledOnTouchOutside(false)
+        progressDialog.show()
+        val mAuth: FirebaseAuth = FirebaseAuth.getInstance()
+        mAuth.createUserWithEmailAndPassword(email, password)
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    saveUserInfo(username, fullname, email, progressDialog)
+                } else {
+                    val message = "An account already exists with that email"
+                    Toast.makeText(
+                        this,
+                        "Error: $message",
+                        Toast.LENGTH_LONG
+                    ).show()
+                    mAuth.signOut()
+                    progressDialog.dismiss()
+                }
             }
-        }
     }
+
 
     private fun saveUserInfo(
         username: String,
@@ -96,6 +84,7 @@ class SignUpActivity : AppCompatActivity() {
         userMap["fullname"] = fullname.lowercase()
         userMap["username"] = username.lowercase()
         userMap["email"] = email
+        userMap["isAdmin"] = false
         userMap["bio"] = "hey i am using this app"
         userMap["image"] = "gs://instach-c2484.appspot.com/Default Images/profile.png"
         userRef.child(currentUserID).setValue(userMap)
@@ -132,6 +121,15 @@ class SignUpActivity : AppCompatActivity() {
             }
 
 
+    }
+
+    override fun onSuccess(message: String) {
+        CreateAccount()
+
+    }
+
+    override fun onError(message: String) {
+        Toast.makeText(this,message,Toast.LENGTH_LONG).show()
     }
 
 

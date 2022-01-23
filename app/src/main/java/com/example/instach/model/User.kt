@@ -4,7 +4,7 @@ import android.text.TextUtils
 import android.util.Patterns
 import androidx.databinding.BaseObservable
 
-class User :BaseObservable{
+class User : BaseObservable {
     private var username: String = ""
     private var fullname: String = ""
     private var bio: String = ""
@@ -12,6 +12,7 @@ class User :BaseObservable{
     private var email: String = ""
     private var password: String = ""
     private var uid: String = ""
+    private var isAdmin: Boolean = false
 
     constructor()
 
@@ -90,15 +91,26 @@ class User :BaseObservable{
     }
 
 
-    fun isDataValid(): Int
-    {
-        if (TextUtils.isEmpty(getEmail())){
+    fun getIsAdmin(): Boolean {
+        return isAdmin
+    }
+
+    fun setIsAdmin(isAdmin: Boolean) {
+        this.isAdmin = isAdmin
+    }
+
+    fun isDataValid(): Int {
+        if (TextUtils.isEmpty(getEmail())) {
             return 0
-        }else if (!Patterns.EMAIL_ADDRESS.matcher(getEmail()).matches()){
+        } else if (!Patterns.EMAIL_ADDRESS.matcher(getEmail()).matches()) {
             return 1
-        }else if (getPassword().length <= 7){
+        } else if (getPassword().length <= 7) {
             return 2
-        }else {
+        } else if (TextUtils.isEmpty(getUsername())) {
+            return 3
+        } else if (TextUtils.isEmpty(getFullname())) {
+            return 4
+        } else {
             return -1
         }
     }
