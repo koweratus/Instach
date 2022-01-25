@@ -3,39 +3,45 @@ package com.example.instach.ui
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.ImageButton
+import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.instach.AccountSettingsActivity
-import com.example.instach.adapter.MyImagesAdapter
-import com.example.instach.model.Post
-import com.example.instach.model.User
+import com.example.instach.MainActivity
 import com.example.instach.R
 import com.example.instach.ShowUsersActivity
+import com.example.instach.adapter.MyImagesAdapter
 import com.example.instach.databinding.FragmentProfileBinding
+import com.example.instach.model.Post
+import com.example.instach.model.User
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.StorageReference
 import com.squareup.picasso.Picasso
+import com.theartofdev.edmodo.cropper.CropImage
+import com.theartofdev.edmodo.cropper.CropImage.activity
 import java.util.*
 import kotlin.collections.ArrayList
 
 
-class ProfileFragment : Fragment() {
+class ProfileFragment : Fragment(),MyImagesAdapter.OnItemClickListener {
+
+    private lateinit var mStorage: FirebaseStorage
     private lateinit var binding: FragmentProfileBinding
 
     private lateinit var profileId: String
     private lateinit var firebaseUser: FirebaseUser
 
-    var postList: List<Post>? = null
+    private lateinit var postList: List<Post>
     var myImagesAdapter: MyImagesAdapter? = null
     var myImagesAdapterSaved: MyImagesAdapter? = null
     var postListSaved: List<Post>? = null
@@ -44,10 +50,9 @@ class ProfileFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentProfileBinding.inflate(layoutInflater, container, false)
-
-
+        mStorage = FirebaseStorage.getInstance();
         firebaseUser = FirebaseAuth.getInstance().currentUser!!
         val pref = context?.getSharedPreferences("PREFS", Context.MODE_PRIVATE)
 
@@ -56,13 +61,12 @@ class ProfileFragment : Fragment() {
         }
 
         if (profileId == firebaseUser.uid) {
-            binding.btnEdit.text = "Edit Profile"
+            binding.btnEdit.text = getString(R.string.edit_profile_lbl)
         } else if (profileId != firebaseUser.uid) {
             checkFollowAndFollowingButtonStatus()
         }
 
-        var recyclerViewUploadImages: RecyclerView
-        recyclerViewUploadImages = binding.rvProfileImages
+        val recyclerViewUploadImages: RecyclerView = binding.rvProfileImages
         recyclerViewUploadImages.setHasFixedSize(true)
         val linearLayoutManager: LinearLayoutManager = GridLayoutManager(context, 3)
         recyclerViewUploadImages.layoutManager = linearLayoutManager
@@ -76,9 +80,11 @@ class ProfileFragment : Fragment() {
         }
         recyclerViewUploadImages.adapter = myImagesAdapter
 
+       myImagesAdapter!!.setOnItemClickListener(this)
+       // recyclerViewUploadImages.adapter= MyImagesAdapter(requireContext(),postList)
         //recyclerview for saved images
-        var recyclerSavedImages: RecyclerView
-        recyclerSavedImages = binding.rvProfileImagesSaved
+
+        val recyclerSavedImages: RecyclerView = binding.rvProfileImagesSaved
         recyclerSavedImages.setHasFixedSize(true)
         val linearLayoutManager2: LinearLayoutManager = GridLayoutManager(context, 3)
         recyclerSavedImages.layoutManager = linearLayoutManager2
@@ -92,51 +98,46 @@ class ProfileFragment : Fragment() {
         }
         recyclerSavedImages.adapter = myImagesAdapterSaved
 
-        var uploadedImagesBtn: ImageButton
-        uploadedImagesBtn = binding.imagesGridViewBtn
+        val uploadedImagesBtn: ImageButton = binding.imagesGridViewBtn
         uploadedImagesBtn.setOnClickListener{
             recyclerSavedImages.visibility = View.GONE
             recyclerViewUploadImages.visibility = View.VISIBLE
         }
 
-        var savedImagesBtn: ImageButton
-        savedImagesBtn = binding.imagesSaveBtn
+        val savedImagesBtn: ImageButton = binding.imagesSaveBtn
         savedImagesBtn.setOnClickListener{
             recyclerSavedImages.visibility = View.VISIBLE
             recyclerViewUploadImages.visibility = View.GONE
         }
 
         binding.btnEdit.setOnClickListener {
-            val getButtonText = binding.btnEdit.text.toString()
-            when {
-                getButtonText == "Edit Profile" ->
+            when (binding.btnEdit.text.toString()) {
+                "Edit Profile" ->
                     startActivity(Intent(context, AccountSettingsActivity::class.java))
-
-                getButtonText == "Follow" -> {
-                    firebaseUser.uid.let { it ->
+                "Follow" -> {
+                    firebaseUser.uid.let {
                         FirebaseDatabase.getInstance().reference
-                            .child("Follow").child(it.toString())
+                            .child("Follow").child(it)
                             .child("Following").child(profileId).setValue(true)
                     }
-                    firebaseUser.uid.let { it ->
+                    firebaseUser.uid.let {
                         FirebaseDatabase.getInstance().reference
                             .child("Follow").child(profileId)
-                            .child("Followers").child(it.toString()).setValue(true)
+                            .child("Followers").child(it).setValue(true)
                     }
                     addNotification()
                 }
+                "Following" -> {
 
-                getButtonText == "Following" -> {
-
-                    firebaseUser.uid.let { it ->
+                    firebaseUser.uid.let {
                         FirebaseDatabase.getInstance().reference
-                            .child("Follow").child(it.toString())
+                            .child("Follow").child(it)
                             .child("Following").child(profileId).removeValue()
                     }
-                    firebaseUser.uid.let { it ->
+                    firebaseUser.uid.let {
                         FirebaseDatabase.getInstance().reference
                             .child("Follow").child(profileId)
-                            .child("Followers").child(it.toString()).removeValue()
+                            .child("Followers").child(it).removeValue()
 
                     }
                 }
@@ -216,18 +217,18 @@ class ProfileFragment : Fragment() {
     }
 
     private fun checkFollowAndFollowingButtonStatus() {
-        val followingRef = firebaseUser.uid.let { it ->
+        val followingRef = firebaseUser.uid.let {
             FirebaseDatabase.getInstance().reference
-                .child("Follow").child(it.toString())
+                .child("Follow").child(it)
                 .child("Following")
         }
         followingRef.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 if (snapshot.child(profileId).exists()) {
-                    binding.btnEdit.text = "Following"
+                    binding.btnEdit.text = getString(R.string.following_lbl)
 
                 } else {
-                    binding.btnEdit.text = "Follow"
+                    binding.btnEdit.text = getString(R.string.follow_lbl)
                 }
             }
 
@@ -362,7 +363,7 @@ class ProfileFragment : Fragment() {
                             postCounter++
                         }
                     }
-                    binding.tvTotalPosts.text = " " + postCounter
+                    binding.tvTotalPosts.text = " $postCounter"
                 }
             }
 
@@ -379,7 +380,7 @@ class ProfileFragment : Fragment() {
 
         val notiMap = HashMap<String, Any>()
         // osoba koja lajka post
-        notiMap["userId"] = firebaseUser!!.uid
+        notiMap["userId"] = firebaseUser.uid
         notiMap["text"] = "started following you"
         notiMap["postId"] = ""
         notiMap["isPost"] = false
@@ -387,4 +388,23 @@ class ProfileFragment : Fragment() {
         notiRef.push().setValue(notiMap)
 
     }
+
+    override fun onItemClick(position: Int) {
+
+    }
+
+    override fun onWhatEverClick(position: Int) {
+    }
+
+    override fun onDeleteClick(position: Int) {
+        val selectedItem: Post = postList[position]
+        val selectedKey: String = selectedItem.getPostId()
+
+        val imageRef: StorageReference = mStorage.getReferenceFromUrl(selectedItem.getPostImage())
+        imageRef.delete().addOnSuccessListener {
+            FirebaseDatabase.getInstance().reference.child("Posts").child(selectedKey).removeValue()
+            Toast.makeText(requireContext(), "Item deleted", Toast.LENGTH_SHORT).show()
+        }
+    }
+
 }

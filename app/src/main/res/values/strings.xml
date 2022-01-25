@@ -28,7 +28,9 @@
     <string name="enter_your_username">Enter your username</string>
     <string name="enter_you_full_name">Enter you full name</string>
     <string name="already_have_an_account_sign_in">Already Have An Account? Sign In</string>
-    <string name="edit_profile_lbl">Edit Profile</string>
     <string name="Following_lbl">Following</string>
     <string name="Follow_lbl">Follow</string>
+    <string name="edit_profile_lbl">Edit Profile</string>
+    <string name="following_lbl">Following</string>
+    <string name="follow_lbl">Follow</string>
 </resources>

@@ -61,7 +61,6 @@ class PostDetailsFragment : Fragment() {
                 postList!!.add(post!!)
                 postAdapter!!.notifyDataSetChanged()
 
-
             }
 
             override fun onCancelled(error: DatabaseError) {
