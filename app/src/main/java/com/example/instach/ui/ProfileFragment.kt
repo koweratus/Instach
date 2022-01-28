@@ -33,7 +33,7 @@ import java.util.*
 import kotlin.collections.ArrayList
 
 
-class ProfileFragment : Fragment(),MyImagesAdapter.OnItemClickListener {
+class ProfileFragment : Fragment(), MyImagesAdapter.OnItemClickListener {
 
     private lateinit var mStorage: FirebaseStorage
     private lateinit var binding: FragmentProfileBinding
@@ -80,8 +80,8 @@ class ProfileFragment : Fragment(),MyImagesAdapter.OnItemClickListener {
         }
         recyclerViewUploadImages.adapter = myImagesAdapter
 
-       myImagesAdapter!!.setOnItemClickListener(this)
-       // recyclerViewUploadImages.adapter= MyImagesAdapter(requireContext(),postList)
+        myImagesAdapter!!.setOnItemClickListener(this)
+        // recyclerViewUploadImages.adapter= MyImagesAdapter(requireContext(),postList)
         //recyclerview for saved images
 
         val recyclerSavedImages: RecyclerView = binding.rvProfileImagesSaved
@@ -99,13 +99,13 @@ class ProfileFragment : Fragment(),MyImagesAdapter.OnItemClickListener {
         recyclerSavedImages.adapter = myImagesAdapterSaved
 
         val uploadedImagesBtn: ImageButton = binding.imagesGridViewBtn
-        uploadedImagesBtn.setOnClickListener{
+        uploadedImagesBtn.setOnClickListener {
             recyclerSavedImages.visibility = View.GONE
             recyclerViewUploadImages.visibility = View.VISIBLE
         }
 
         val savedImagesBtn: ImageButton = binding.imagesSaveBtn
-        savedImagesBtn.setOnClickListener{
+        savedImagesBtn.setOnClickListener {
             recyclerSavedImages.visibility = View.VISIBLE
             recyclerViewUploadImages.visibility = View.GONE
         }
@@ -144,16 +144,16 @@ class ProfileFragment : Fragment(),MyImagesAdapter.OnItemClickListener {
             }
         }
 
-        binding.tvTotalFollowers.setOnClickListener{
+        binding.tvTotalFollowers.setOnClickListener {
             val intent = Intent(context, ShowUsersActivity::class.java)
-            intent.putExtra("id",profileId)
+            intent.putExtra("id", profileId)
             intent.putExtra("title", "followers")
             startActivity(intent)
         }
 
-        binding.tvTotalFollowing.setOnClickListener{
+        binding.tvTotalFollowing.setOnClickListener {
             val intent = Intent(context, ShowUsersActivity::class.java)
-            intent.putExtra("id",profileId)
+            intent.putExtra("id", profileId)
             intent.putExtra("title", "following")
             startActivity(intent)
         }
@@ -161,7 +161,8 @@ class ProfileFragment : Fragment(),MyImagesAdapter.OnItemClickListener {
         getFollowers()
         getFollowings()
         userInfo()
-        myPhotos()
+        checkIfAdminOrUser()
+
         getTotalNumberOfPost()
         mySaved()
         return binding.root
@@ -170,12 +171,13 @@ class ProfileFragment : Fragment(),MyImagesAdapter.OnItemClickListener {
     private fun mySaved() {
         mySavedImg = ArrayList()
 
-        val saveRef = FirebaseDatabase.getInstance().reference.child("Saves").child(firebaseUser.uid)
+        val saveRef =
+            FirebaseDatabase.getInstance().reference.child("Saves").child(firebaseUser.uid)
 
-        saveRef.addValueEventListener(object : ValueEventListener{
+        saveRef.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-                if (snapshot.exists()){
-                    for (snapshots in snapshot.children){
+                if (snapshot.exists()) {
+                    for (snapshots in snapshot.children) {
                         (mySavedImg as ArrayList<String>).add(snapshots.key!!)
                     }
                     readSavedImagesData()
@@ -190,18 +192,39 @@ class ProfileFragment : Fragment(),MyImagesAdapter.OnItemClickListener {
 
     }
 
+    private fun checkIfAdminOrUser(){
+        val postsRef = FirebaseDatabase.getInstance().reference
+            .child("Users").child(FirebaseAuth.getInstance().currentUser!!.uid)
+        postsRef.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+
+                val user = snapshot.getValue(User::class.java)
+                if (user!!.getIsAdmin()){
+                   myPhotosAdmin()
+                }else{
+                    myPhotos()
+                }
+
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+
+            }
+        })
+    }
+
     private fun readSavedImagesData() {
         val postRef = FirebaseDatabase.getInstance().reference.child("Posts")
 
         postRef.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-                if (snapshot.exists()){
+                if (snapshot.exists()) {
                     (postListSaved as ArrayList<Post>).clear()
 
-                    for (snapshots in snapshot.children){
+                    for (snapshots in snapshot.children) {
                         val post = snapshots.getValue(Post::class.java)
-                        for (key in mySavedImg!!){
-                            if (post!!.getPostId() == key){
+                        for (key in mySavedImg!!) {
+                            if (post!!.getPostId() == key) {
                                 (postListSaved as ArrayList<Post>).add(post)
                             }
                         }
@@ -266,6 +289,32 @@ class ProfileFragment : Fragment(),MyImagesAdapter.OnItemClickListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 if (snapshot.exists()) {
                     binding.tvTotalFollowing.text = snapshot.childrenCount.toString()
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+
+            }
+        })
+    }
+
+    private fun myPhotosAdmin() {
+        val postRef = FirebaseDatabase.getInstance().reference.child("Posts")
+
+        postRef.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                if (snapshot.exists()) {
+                    (postList as ArrayList<Post>).clear()
+
+                    for (snapshots in snapshot.children) {
+                        val post = snapshots.getValue(Post::class.java)!!
+
+
+                        (postList as ArrayList<Post>).add(post)
+                        Collections.reverse(postList)
+                        myImagesAdapter!!.notifyDataSetChanged()
+
+                    }
                 }
             }
 
