@@ -70,7 +70,7 @@ class AddPostActivity : AppCompatActivity() {
                     }
                     return@Continuation fileReference.downloadUrl
 
-                }).addOnCompleteListener(OnCompleteListener<Uri> { task ->
+                }).addOnCompleteListener { task ->
                     if (task.isSuccessful) {
                         val downloadUrl = task.result
                         myUrl = downloadUrl.toString()
@@ -97,7 +97,7 @@ class AddPostActivity : AppCompatActivity() {
 
                     }
 
-                })
+                }
             }
         }
     }

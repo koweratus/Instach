@@ -84,7 +84,7 @@ class AccountSettingsActivity : AppCompatActivity() {
                 progressDialog.show()
 
                 val fileReference = storageProfilePicRef!!.child(firebaseUser.uid + ".jpg")
-                var uploadTask: StorageTask<*>
+                val uploadTask: StorageTask<*>
                 uploadTask = fileReference.putFile(imageUri!!)
 
                 uploadTask.continueWithTask(Continuation <UploadTask.TaskSnapshot, Task<Uri>> { task->
@@ -95,8 +95,8 @@ class AccountSettingsActivity : AppCompatActivity() {
                         }
                     }
                     return@Continuation fileReference.downloadUrl
-                }).addOnCompleteListener( OnCompleteListener<Uri> {task->
-                    if (task.isSuccessful){
+                }).addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
                         val downloadUrl = task.result
                         myUrl = downloadUrl.toString()
 
@@ -119,11 +119,10 @@ class AccountSettingsActivity : AppCompatActivity() {
                         finish()
                         progressDialog.dismiss()
 
-                    }
-                    else{
+                    } else {
                         progressDialog.dismiss()
                     }
-                })
+                }
             }
         }
 
@@ -206,7 +205,6 @@ class AccountSettingsActivity : AppCompatActivity() {
 
         userRef.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-
 
                 if (snapshot.exists()) {
                     val user = snapshot.getValue<User>(User::class.java)

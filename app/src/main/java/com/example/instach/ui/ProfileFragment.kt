@@ -3,7 +3,9 @@ package com.example.instach.ui
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.view.*
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.Toast
 import androidx.fragment.app.Fragment
@@ -11,7 +13,6 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.instach.AccountSettingsActivity
-import com.example.instach.MainActivity
 import com.example.instach.R
 import com.example.instach.ShowUsersActivity
 import com.example.instach.adapter.MyImagesAdapter
@@ -27,8 +28,6 @@ import com.google.firebase.database.ValueEventListener
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import com.squareup.picasso.Picasso
-import com.theartofdev.edmodo.cropper.CropImage
-import com.theartofdev.edmodo.cropper.CropImage.activity
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -52,7 +51,7 @@ class ProfileFragment : Fragment(), MyImagesAdapter.OnItemClickListener {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentProfileBinding.inflate(layoutInflater, container, false)
-        mStorage = FirebaseStorage.getInstance();
+        mStorage = FirebaseStorage.getInstance()
         firebaseUser = FirebaseAuth.getInstance().currentUser!!
         val pref = context?.getSharedPreferences("PREFS", Context.MODE_PRIVATE)
 
@@ -412,7 +411,7 @@ class ProfileFragment : Fragment(), MyImagesAdapter.OnItemClickListener {
                             postCounter++
                         }
                     }
-                    binding.tvTotalPosts.text = " $postCounter"
+                    " $postCounter".also { binding.tvTotalPosts.text = it }
                 }
             }
 

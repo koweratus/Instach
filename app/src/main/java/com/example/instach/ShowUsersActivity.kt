@@ -38,8 +38,7 @@ class ShowUsersActivity : AppCompatActivity() {
             finish()
         }
 
-        var recyclerView: RecyclerView
-        recyclerView = binding.rv
+        val recyclerView: RecyclerView = binding.rv
         recyclerView.setHasFixedSize(true)
         recyclerView.layoutManager = LinearLayoutManager(this)
         userList = ArrayList()

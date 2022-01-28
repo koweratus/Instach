@@ -151,7 +151,7 @@ class PostAdapter(private val mContext: Context, private val mPost: List<Post>) 
         likesRef.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 if (snapshot.exists()) {
-                    likes.text = snapshot.childrenCount.toString() + " likes"
+                    (snapshot.childrenCount.toString() + " likes").also { likes.text = it }
                 }
             }
 
@@ -169,7 +169,7 @@ class PostAdapter(private val mContext: Context, private val mPost: List<Post>) 
         commentsRef.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 if (snapshot.exists()) {
-                    comments.text = "view all " + snapshot.childrenCount.toString() + " comments"
+                    ("view all " + snapshot.childrenCount.toString() + " comments").also { comments.text = it }
                 }
             }
 
@@ -190,10 +190,10 @@ class PostAdapter(private val mContext: Context, private val mPost: List<Post>) 
             override fun onDataChange(snapshot: DataSnapshot) {
                 if (snapshot.child(firebaseUser!!.uid).exists()) {
                     likeBtn.setImageResource(R.drawable.heart_clicked)
-                    likeBtn.tag = "Liked"
+                    likeBtn.tag = mContext.getString(R.string.Liked_lbl)
                 } else {
                     likeBtn.setImageResource(R.drawable.heart_not_clicked)
-                    likeBtn.tag = "Like"
+                    likeBtn.tag = mContext.getString(R.string.Like_lbl)
                 }
             }
 
@@ -213,7 +213,7 @@ class PostAdapter(private val mContext: Context, private val mPost: List<Post>) 
         userRef.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 if (snapshot.exists()) {
-                    val user = snapshot.getValue<User>(User::class.java)
+                    val user = snapshot.getValue(User::class.java)
                     Picasso.get().load(user!!.getImage()).placeholder(R.drawable.profile)
                         .into(profileImage)
                     userName.text = user.getUsername()

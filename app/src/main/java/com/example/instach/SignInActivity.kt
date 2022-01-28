@@ -1,59 +1,26 @@
 package com.example.instach
 
-import android.annotation.SuppressLint
-import android.annotation.TargetApi
-import android.app.Activity
-import android.app.Dialog
 import android.app.ProgressDialog
 import android.content.Intent
-import android.net.Uri
-import android.os.Build
 import android.os.Bundle
-import android.text.TextUtils
-import android.util.Log
-import android.webkit.WebResourceRequest
-import android.webkit.WebView
-import android.webkit.WebViewClient
 import android.widget.Toast
-import com.google.android.material.snackbar.Snackbar
 import androidx.appcompat.app.AppCompatActivity
-import androidx.navigation.findNavController
-import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.navigateUp
-import androidx.navigation.ui.setupActionBarWithNavController
+import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.ViewModelProvider
+import com.example.instach.`interface`.LoginResultCallBacks
 import com.example.instach.databinding.ActivitySignInBinding
+import com.example.instach.viewModel.LoginViewModel
+import com.example.instach.viewModel.LoginViewModelFactory
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
-import com.google.android.gms.auth.api.signin.SignInAccount
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.GithubAuthProvider
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.OAuthProvider
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.*
 import kotlinx.coroutines.tasks.await
-import org.json.JSONObject
-import org.json.JSONTokener
-import java.io.OutputStreamWriter
-import java.net.URL
-import java.util.concurrent.TimeUnit
-import javax.net.ssl.HttpsURLConnection
-import androidx.annotation.NonNull
-import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.ViewModelProvider
-import com.example.instach.`interface`.LoginResultCallBacks
-import com.example.instach.viewModel.LoginViewModel
-import com.example.instach.viewModel.LoginViewModelFactory
-
-import com.google.android.gms.tasks.OnFailureListener
-
-import com.google.firebase.auth.AuthResult
-
-import com.google.android.gms.tasks.OnSuccessListener
-import com.google.android.gms.tasks.Task
 
 
 const val REQUEST_CODE_SIGN_IN = 0
@@ -69,7 +36,7 @@ class SignInActivity : AppCompatActivity(), LoginResultCallBacks {
         super.onCreate(savedInstanceState)
 
         auth = FirebaseAuth.getInstance()
-        binding = DataBindingUtil.setContentView<ActivitySignInBinding>(this,R.layout.activity_sign_in)
+        binding = DataBindingUtil.setContentView(this,R.layout.activity_sign_in)
         binding.viewModel = ViewModelProvider(
             this,
             LoginViewModelFactory(this)
@@ -116,24 +83,17 @@ class SignInActivity : AppCompatActivity(), LoginResultCallBacks {
     private fun githubAuthForFirebase() {
         auth
             .startActivityForSignInWithProvider( /* activity= */this, provider.build())
-            .addOnSuccessListener(
-                OnSuccessListener<AuthResult?> {
-
-                    saveGoogleInfo(
-                        it.additionalUserInfo?.username!!,
-                        it.additionalUserInfo?.username!!,
-                        it.user?.email!!
-                    )
-                    val intent = Intent(this, MainActivity::class.java)
-                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
-                    startActivity(intent)
-                    finish()
-                })
-            .addOnFailureListener(
-                OnFailureListener {
-                    // Handle failure.
-                })
-
+            .addOnSuccessListener {
+                saveGoogleInfo(
+                    it.additionalUserInfo?.username!!,
+                    it.additionalUserInfo?.username!!,
+                    it.user?.email!!
+                )
+                val intent = Intent(this, MainActivity::class.java)
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
+                startActivity(intent)
+                finish()
+            }
     }
 
 

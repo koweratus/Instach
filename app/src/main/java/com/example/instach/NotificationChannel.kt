@@ -6,6 +6,6 @@ class NotificationChannel(var strategy: NotificationTypeStrategy) {
     }
 
     fun howToNotifiy():String{
-        return "${strategy.notificationMode()}"
+        return strategy.notificationMode()
     }
 }

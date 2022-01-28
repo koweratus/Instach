@@ -33,4 +33,7 @@
     <string name="edit_profile_lbl">Edit Profile</string>
     <string name="following_lbl">Following</string>
     <string name="follow_lbl">Follow</string>
+    <string name="Like_lbl">Like</string>
+    <string name="Liked_lbl">Liked</string>
+
 </resources>

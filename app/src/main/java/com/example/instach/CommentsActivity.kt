@@ -37,8 +37,7 @@ class CommentsActivity : AppCompatActivity() {
 
         firebaseUser = FirebaseAuth.getInstance().currentUser
 
-        var recyclerView : RecyclerView
-        recyclerView = binding.rvComments
+        val recyclerView : RecyclerView = binding.rvComments
         val linearLayoutManager = LinearLayoutManager(this)
         linearLayoutManager.reverseLayout = true
         recyclerView.layoutManager = linearLayoutManager
@@ -51,19 +50,14 @@ class CommentsActivity : AppCompatActivity() {
         readComment()
         getPostImage()
 
-        binding.postComment.setOnClickListener(
-            View.OnClickListener {
-                if (binding.postComment.text.toString() == ""){
-                    Toast.makeText(this, "Please write comment first", Toast.LENGTH_SHORT).show()
-                }else{
-                    addComment()
-                }
-
+        binding.postComment.setOnClickListener {
+            if (binding.postComment.text.toString() == "") {
+                Toast.makeText(this, "Please write comment first", Toast.LENGTH_SHORT).show()
+            } else {
+                addComment()
             }
-        )
-
+        }
         setContentView(binding.root)
-
     }
 
     private fun addComment() {
