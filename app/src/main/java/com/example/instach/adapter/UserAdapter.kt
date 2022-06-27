@@ -65,7 +65,6 @@ class UserAdapter(
 
         }
 
-
         holder.follow_btn.setOnClickListener {
             if (holder.follow_btn.text.toString() == "Follow") {
                 firebaseUser?.uid.let { it ->
@@ -142,7 +141,7 @@ class UserAdapter(
         return mUser.size
     }
 
-     class ViewHolder(@NonNull itemView: View) : RecyclerView.ViewHolder(itemView) {
+    class ViewHolder(@NonNull itemView: View) : RecyclerView.ViewHolder(itemView) {
         var username: TextView = itemView.findViewById(R.id.tv_username_search)
         var fullname: TextView = itemView.findViewById(R.id.tv_fullname_search)
         var user_profile_image: CircleImageView =

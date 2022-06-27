@@ -54,8 +54,6 @@ class PostAdapter(private val mContext: Context, private val mPost: List<Post>) 
             publisher = itemView.findViewById(R.id.publisher)
             description = itemView.findViewById(R.id.description)
             comments = itemView.findViewById(R.id.comments)
-
-
         }
 
     }

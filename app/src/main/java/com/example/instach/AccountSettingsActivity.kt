@@ -125,7 +125,6 @@ class AccountSettingsActivity : AppCompatActivity() {
                 }
             }
         }
-
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -217,7 +216,6 @@ class AccountSettingsActivity : AppCompatActivity() {
             }
 
             override fun onCancelled(error: DatabaseError) {
-
             }
         })
     }

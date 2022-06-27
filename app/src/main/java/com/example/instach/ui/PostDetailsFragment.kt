@@ -27,7 +27,6 @@ class PostDetailsFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         binding = FragmentPostDetailsBinding.inflate(layoutInflater, container, false)
 
         val preferences = context?.getSharedPreferences("PREFS", Context.MODE_PRIVATE)
@@ -62,9 +61,7 @@ class PostDetailsFragment : Fragment() {
                 postAdapter!!.notifyDataSetChanged()
 
             }
-
             override fun onCancelled(error: DatabaseError) {
-
             }
         })
     }

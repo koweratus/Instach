@@ -17,12 +17,10 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 
-
 class SearchFragment : Fragment() {
 
     private var _binding: FragmentSearchBinding? = null
     private val binding get() = _binding!!
-
     private var recyclerView: RecyclerView? = null
     private var userAdapter: UserAdapter? = null
     private var mUser: MutableList<User>? = null
@@ -46,7 +44,6 @@ class SearchFragment : Fragment() {
         binding.etSearch.addTextChangedListener(object : TextWatcher{
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
             }
-
             override fun onTextChanged(s: CharSequence?, p1: Int, p2: Int, p3: Int) {
                 if (binding.etSearch.text.toString().isEmpty()){
                 }
@@ -56,13 +53,9 @@ class SearchFragment : Fragment() {
                     searchUser(s.toString().lowercase())
                 }
             }
-
             override fun afterTextChanged(p0: Editable?) {
-
             }
-
         })
-
         return root
     }
 
@@ -81,12 +74,8 @@ class SearchFragment : Fragment() {
                         }
                     }
                     userAdapter?.notifyDataSetChanged()
-
-
             }
-
             override fun onCancelled(error: DatabaseError) {
-
             }
         })
     }
@@ -107,9 +96,7 @@ class SearchFragment : Fragment() {
                     userAdapter?.notifyDataSetChanged()
                 }
             }
-
             override fun onCancelled(error: DatabaseError) {
-
             }
         })
     }
@@ -119,5 +106,4 @@ class SearchFragment : Fragment() {
         super.onDestroyView()
         _binding = null
     }
-
 }

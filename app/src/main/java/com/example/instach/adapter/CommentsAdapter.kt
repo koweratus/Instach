@@ -59,7 +59,6 @@ class CommentsAdapter(
             }
 
             override fun onCancelled(error: DatabaseError) {
-
             }
         })
 

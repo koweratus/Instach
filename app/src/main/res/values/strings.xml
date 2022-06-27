@@ -35,5 +35,8 @@
     <string name="follow_lbl">Follow</string>
     <string name="Like_lbl">Like</string>
     <string name="Liked_lbl">Liked</string>
-
+    <string name="github_client_id"> 3db8cf3508642c15779d </string>
+    <string name="github_client_secret">9cb43748a927fcf41dc5fc7bef23528aadbe6bf3</string>
+    <string name="github_redirect_url">https://instach-c2484.firebaseapp.com/__/auth/handler</string>
+    <string name="github_token">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</string>
 </resources>

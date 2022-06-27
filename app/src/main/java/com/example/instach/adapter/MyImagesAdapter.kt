@@ -37,7 +37,6 @@ class MyImagesAdapter(private val mContext: Context, mPost: List<Post>) :
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(mContext).inflate(R.layout.images_item_layout, parent, false)
-
         return ViewHolder(view)
     }
 
@@ -67,19 +66,11 @@ class MyImagesAdapter(private val mContext: Context, mPost: List<Post>) :
                         it.showContextMenu()
                     }
                 }
-
             }
-
             override fun onCancelled(error: DatabaseError) {
 
             }
         })
-
-
-
-
-
-
     }
 
     override fun getItemCount(): Int {

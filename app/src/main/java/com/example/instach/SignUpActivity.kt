@@ -69,7 +69,6 @@ class SignUpActivity : AppCompatActivity(), LoginResultCallBacks {
             }
     }
 
-
     private fun saveUserInfo(
         username: String,
         fullname: String,
@@ -119,8 +118,6 @@ class SignUpActivity : AppCompatActivity(), LoginResultCallBacks {
                     progressDialog.dismiss()
                 }
             }
-
-
     }
 
     override fun onSuccess(message: String) {
@@ -131,6 +128,4 @@ class SignUpActivity : AppCompatActivity(), LoginResultCallBacks {
     override fun onError(message: String) {
         Toast.makeText(this,message,Toast.LENGTH_LONG).show()
     }
-
-
 }

@@ -67,7 +67,6 @@ class HomeFragment : Fragment() {
                     for (snapshots in snapshot.children) {
                         snapshots.key?.let { (followingList as ArrayList<String>).add(it) }
                     }
-
                     retrievePosts()
                 }
 
@@ -97,11 +96,9 @@ class HomeFragment : Fragment() {
                     }
                 }
             }
-
             override fun onCancelled(error: DatabaseError) {
 
             }
         })
     }
-
 }

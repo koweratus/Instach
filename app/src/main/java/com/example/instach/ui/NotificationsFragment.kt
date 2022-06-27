@@ -64,7 +64,6 @@ class NotificationsFragment : Fragment() {
                     notificationAdapter!!.notifyDataSetChanged()
                 }
             }
-
             override fun onCancelled(error: DatabaseError) {
             }
         })

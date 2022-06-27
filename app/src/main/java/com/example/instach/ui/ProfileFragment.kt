@@ -182,9 +182,7 @@ class ProfileFragment : Fragment(), MyImagesAdapter.OnItemClickListener {
                     readSavedImagesData()
                 }
             }
-
             override fun onCancelled(error: DatabaseError) {
-
             }
         })
 
@@ -253,7 +251,6 @@ class ProfileFragment : Fragment(), MyImagesAdapter.OnItemClickListener {
                     binding.btnEdit.text = getString(R.string.follow_lbl)
                 }
             }
-
             override fun onCancelled(error: DatabaseError) {
 
             }
@@ -290,9 +287,7 @@ class ProfileFragment : Fragment(), MyImagesAdapter.OnItemClickListener {
                     binding.tvTotalFollowing.text = snapshot.childrenCount.toString()
                 }
             }
-
             override fun onCancelled(error: DatabaseError) {
-
             }
         })
     }
@@ -304,10 +299,8 @@ class ProfileFragment : Fragment(), MyImagesAdapter.OnItemClickListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 if (snapshot.exists()) {
                     (postList as ArrayList<Post>).clear()
-
                     for (snapshots in snapshot.children) {
                         val post = snapshots.getValue(Post::class.java)!!
-
 
                         (postList as ArrayList<Post>).add(post)
                         Collections.reverse(postList)
@@ -316,7 +309,6 @@ class ProfileFragment : Fragment(), MyImagesAdapter.OnItemClickListener {
                     }
                 }
             }
-
             override fun onCancelled(error: DatabaseError) {
 
             }
@@ -325,7 +317,6 @@ class ProfileFragment : Fragment(), MyImagesAdapter.OnItemClickListener {
 
     private fun myPhotos() {
         val postRef = FirebaseDatabase.getInstance().reference.child("Posts")
-
         postRef.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 if (snapshot.exists()) {
@@ -356,7 +347,6 @@ class ProfileFragment : Fragment(), MyImagesAdapter.OnItemClickListener {
         userRef.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
 
-
                 if (snapshot.exists()) {
                     val user = snapshot.getValue<User>(User::class.java)
                     Picasso.get().load(user!!.getImage()).placeholder(R.drawable.profile)
@@ -366,9 +356,7 @@ class ProfileFragment : Fragment(), MyImagesAdapter.OnItemClickListener {
                     binding.tvBio.text = user.getBio()
                 }
             }
-
             override fun onCancelled(error: DatabaseError) {
-
             }
         })
     }
@@ -386,7 +374,6 @@ class ProfileFragment : Fragment(), MyImagesAdapter.OnItemClickListener {
         super.onPause()
 
         val pref = context?.getSharedPreferences("PREFS", Context.MODE_PRIVATE)?.edit()
-
         pref?.putString("profileId", firebaseUser.uid)
         pref?.apply()
     }
@@ -394,7 +381,6 @@ class ProfileFragment : Fragment(), MyImagesAdapter.OnItemClickListener {
     override fun onDestroy() {
         super.onDestroy()
         val pref = context?.getSharedPreferences("PREFS", Context.MODE_PRIVATE)?.edit()
-
         pref?.putString("profileId", firebaseUser.uid)
         pref?.apply()
     }
@@ -414,9 +400,7 @@ class ProfileFragment : Fragment(), MyImagesAdapter.OnItemClickListener {
                     " $postCounter".also { binding.tvTotalPosts.text = it }
                 }
             }
-
             override fun onCancelled(error: DatabaseError) {
-
             }
         })
     }
@@ -438,9 +422,7 @@ class ProfileFragment : Fragment(), MyImagesAdapter.OnItemClickListener {
     }
 
     override fun onItemClick(position: Int) {
-
     }
-
     override fun onWhatEverClick(position: Int) {
     }
 

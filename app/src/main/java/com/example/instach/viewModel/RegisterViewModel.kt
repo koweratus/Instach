@@ -48,11 +48,9 @@ class RegisterViewModel(private val listener: LoginResultCallBacks) : ViewModel(
             override fun afterTextChanged(s: Editable?) {
                 user.setFullname(s.toString())
             }
-
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
 
             }
-
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
             }
         }
@@ -70,7 +68,6 @@ class RegisterViewModel(private val listener: LoginResultCallBacks) : ViewModel(
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
             }
         }
-
 
     fun onLoginClicked(v: View) {
         var loginCode: Int = user.isDataValid()

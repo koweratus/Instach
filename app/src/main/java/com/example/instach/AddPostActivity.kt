@@ -20,6 +20,8 @@ import com.google.firebase.storage.StorageTask
 import com.google.firebase.storage.UploadTask
 import com.theartofdev.edmodo.cropper.CropImage
 import com.theartofdev.edmodo.cropper.CropImageView
+import org.aspectj.lang.annotation.Aspect
+
 
 class AddPostActivity : AppCompatActivity() {
 
@@ -39,6 +41,7 @@ class AddPostActivity : AppCompatActivity() {
         binding.ivAddPost.setOnClickListener {
             uploadImage()
         }
+
         binding.imagePost.setOnClickListener{
             pickFromGallery()
         }
